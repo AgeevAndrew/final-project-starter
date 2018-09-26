@@ -3,15 +3,20 @@ package query;
 import filters.Filter;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.Layer;
+import ui.MapMarkerSimple;
+import util.Util;
+import twitter4j.Status;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * A query over the twitter stream.
  * TODO: Task 4: you are to complete this class.
  */
-public class Query {
+public class Query implements Observer {
     // The map on which to display markers when the query matches
     private final JMapViewer map;
     // Each query has its own "layer" so they can be turned on and off all at once
@@ -59,6 +64,14 @@ public class Query {
     @Override
     public String toString() {
         return "Query: " + queryString;
+    }
+
+    @Override
+    public void update(Observable twitterSource, Object o) {
+        Status status = (Status) o;
+        if (getFilter().matches(status)) {
+            this.map.addMapMarker(new MapMarkerSimple(getLayer(), Util.statusCoordinate(status)));
+        }
     }
 
     /**
