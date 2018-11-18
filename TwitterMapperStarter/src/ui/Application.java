@@ -124,7 +124,11 @@ public class Application extends JFrame {
                 Point p = e.getPoint();
                 ICoordinate pos = map().getPosition(p);
                 // TODO: Use the following method to set the text that appears at the mouse cursor
-                map().setToolTipText("This is a tooltip");
+                List<MapMarker> mapMarkerList = getMarkersCovering(pos, pixelWidth(p));
+                for(MapMarker mapMarker : mapMarkerList) {
+                    ImageMapMarker imageMapMarker = (ImageMapMarker)mapMarker;
+                    map().setToolTipText(imageMapMarker.getToolTipText());
+                }
             }
         });
     }

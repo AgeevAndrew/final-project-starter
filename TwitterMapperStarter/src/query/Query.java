@@ -3,7 +3,7 @@ package query;
 import filters.Filter;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.Layer;
-import ui.MapMarkerSimple;
+import ui.ImageMapMarker;
 import util.Util;
 import twitter4j.Status;
 
@@ -70,7 +70,7 @@ public class Query implements Observer {
     public void update(Observable twitterSource, Object o) {
         Status status = (Status) o;
         if (getFilter().matches(status)) {
-            this.map.addMapMarker(new MapMarkerSimple(getLayer(), Util.statusCoordinate(status)));
+            this.map.addMapMarker(new ImageMapMarker(getLayer(), Util.statusCoordinate(status), this.color, status.getUser().getProfileImageURL(), status.getText()));
         }
     }
 
